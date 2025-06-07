@@ -1,0 +1,52 @@
+{
+    "image1": {
+        "data": "hwQPABAAAAAAAAB3AAAAAAAAcHcAAHAHAAB3AAAAdwcAAHdmZnZ3AAAAYGZmZgcAcAdmZmZmBgB3d2ZmZmZ2AHd3ZmZmZnYAcAdmZmZmBgAAAGBmZmYHAAAAd2ZmdncAAAB3AAAAdwcAAHB3AABwBwAAAHcAAAAAAAAAAAAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleUp"
+    },
+    "image2": {
+        "data": "hwQPABAAAAAAAAAAdwAAAHAHAAB3BwAAcHcAAAB3AAAAd2dmZncAAABwZmZmBgAAAGBmZmZmcAcAZ2ZmZmZ3dwBnZmZmZnd3AGBmZmZmcAcAcGZmZgYAAAB3Z2ZmdwAAcHcAAAB3AABwBwAAdwcAAAAAAAB3AAAAAAAAAAAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleDown"
+    },
+    "image3": {
+        "data": "hwQQAA8AAAAAAAAAAAAAAHAHAAAAcAcAcHcAdwB3BwAAd2dmdncAAABwZmZmBwAAAGBmZmYGAAAAYGZmZgYAAABgZmZmBgAAd2BmZmYGdwB3YGZmZgZ3AHB3ZmZmdwcAAHdgZgZ3AAAAAAB3AAAAAAAAcHcHAAAAAABwdwcAAAAAAAB3AAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleRight"
+    },
+    "image4": {
+        "data": "hwQQAA8AAAAAAAB3AAAAAAAAcHcHAAAAAABwdwcAAAAAAAB3AAAAAAB3YGYGdwAAcHdmZmZ3BwB3YGZmZgZ3AHdgZmZmBncAAGBmZmYGAAAAYGZmZgYAAABgZmZmBgAAAHBmZmYHAAAAd2dmdncAAHB3AHcAdwcAcAcAAABwBwAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleLeft"
+    },
+    "image5": {
+        "data": "hwQPABAAAAAAdwAAAAAAAAB3dwAAAAAAAAB3AAAAdwAAAHdmZnZ3AAAAYGZmZgcAcAdmZmZmBgB3d2ZmZmZ2AHd3ZmZmZnYAcAdmZmZmBgAAAGBmZmYHAAAAd2ZmdncAAAB3AAAAdwAAd3cAAAAAAAB3AAAAAAAAAAAAAAAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleUp0"
+    },
+    "image6": {
+        "data": "hwQPABAAAAAAAAAAAAB3AAAAAAAAd3cAAHcAAAB3AAAAd2dmZncAAABwZmZmBgAAAGBmZmZmcAcAZ2ZmZmZ3dwBnZmZmZnd3AGBmZmZmcAcAcGZmZgYAAAB3Z2ZmdwAAAHcAAAB3AAAAAAAAAHd3AAAAAAAAAHcAAAAAAAAAAAA=",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleDown0"
+    },
+    "image7": {
+        "data": "hwQQAA8AAAAAAAB3AAAAAAAAcHcHAAAAdwBwdwcAdwB3AAB3AAB3AHB3YGYGdwcAcHdmZmZ3BwAAYGZmZgYAAABgZmZmBgAAAGBmZmYGAAAAYGZmZgYAAABgZmZmBgAAAHBmZmYHAAAAd2dmdncAAAB3AHcAdwAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleLeft0"
+    },
+    "image8": {
+        "data": "hwQQAA8AAAAAAAAAAAAAAAAAAAAAAAAAAHcAdwB3AAAAd2dmdncAAABwZmZmBwAAAGBmZmYGAAAAYGZmZgYAAABgZmZmBgAAAGBmZmYGAAAAYGZmZgYAAHB3ZmZmdwcAcHdgZgZ3BwB3AAB3AAB3AHcAcHcHAHcAAABwdwcAAAAAAAB3AAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "turtleRight0"
+    },
+    "image9": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "nome"
+    },
+    "*": {
+        "mimeType": "image/x-mkcd-f4",
+        "dataEncoding": "base64",
+        "namespace": "myImages"
+    }
+}
