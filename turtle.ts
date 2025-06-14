@@ -206,6 +206,13 @@ namespace turtle {
         }
     }
 
+    //% block="turtle sprite"
+    //% group="Turtle State" weight=30
+    export function turtleSprite(): Sprite {
+        _ensureTurtleExists();
+        return _turtleSprite;
+    }
+
     // --- Turtle Motion ---
 
     //% block="forward %distance pixels"
