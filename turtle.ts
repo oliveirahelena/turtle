@@ -4,7 +4,7 @@ namespace turtle {
     let _isPenDown: boolean = true;
     let _penColor: number = 1;
     let _penThickness: number = 1;
-    let _currentHeading: number = 0; // Será redefinido em _ensureTurtleExists
+    let _currentHeading: number = 0;
 
     // Coordenadas da tartaruga (sistema Turtle: 0,0 no centro, Y aumenta para cima)
     let _turtleRawX: number = 0;
@@ -21,7 +21,7 @@ namespace turtle {
     const DIR_LEFT = 2;
     const DIR_DOWN = 3;
 
-    let _currentVisualDirection = DIR_UP; // Ajustado para o novo padrão inicial
+    let _currentVisualDirection = DIR_RIGHT; // <<< CORREÇÃO: Padrão inicial é direita
     let _turtleIdleFrames: Image[];
 
     // --- IMAGENS DA TARTARUGA (APENAS IDLE) ---
@@ -78,7 +78,7 @@ namespace turtle {
         . 7 7 7 . . 7 7 . . 7 7 7 . . .
         . 7 7 . . . . . . . . 7 7 . . .
         . . . . . . . . . . . . . . . .
-    `;   // <<< Certifique-se que este asset existe
+    `;
     const turtle_D_idle = img`
         . . . . . . . . . . . . . . . .
         . 7 7 . . . . . . . . 7 7 . . .
@@ -96,7 +96,7 @@ namespace turtle {
         . . . . . 7 7 7 7 . . . . . . .
         . . . . . 7 7 7 7 . . . . . . .
         . . . . . . 7 7 . . . . . . . .
-    `; // <<< Certifique-se que este asset existe
+    `;
 
     // --- Funções Auxiliares de Coordenadas ---
     function _turtleToScreenX(turtleX: number): number {
@@ -109,7 +109,6 @@ namespace turtle {
     function _initializeTurtleFrames() {
         if (!_turtleIdleFrames || !_turtleIdleFrames[0]) {
             _turtleIdleFrames = [turtle_R_idle, turtle_U_idle, turtle_L_idle, turtle_D_idle];
-
             const fallbackImg = image.create(16, 16); fallbackImg.fill(1); fallbackImg.drawRect(0, 0, 16, 16, 7);
             for (let i = 0; i < 4; i++) {
                 if (!_turtleIdleFrames[i]) {
@@ -146,26 +145,25 @@ namespace turtle {
 
             _turtleRawX = 0;
             _turtleRawY = 0;
-            _currentHeading = 90; // <<< MUDANÇA: Começa virada para CIMA (90 graus)
+            _currentHeading = 0; // <<< CORREÇÃO: Começa virada para a DIREITA (0 graus), padrão do Python.
             _isPenDown = true;
             _penColor = 1;
             _penThickness = 1;
             _isTurtleVisible = true;
             _turtleSpeed = 6;
-            _currentVisualDirection = DIR_UP; // Define a direção visual inicial para cima
+            _currentVisualDirection = DIR_RIGHT; // <<< CORREÇÃO: Define a direção visual inicial para a direita.
 
-            // _turtleIdleFrames[DIR_UP] deve ser válido após _initializeTurtleFrames (que inclui fallbacks)
-            let initialImage = _turtleIdleFrames[DIR_UP];
-            if (!initialImage) { // Fallback extremo, não deveria acontecer se _initializeTurtleFrames funcionar
+            let initialImage = _turtleIdleFrames[_currentVisualDirection];
+            if (!initialImage) {
                 initialImage = image.create(16, 16); initialImage.fill(1);
-                console.error("TURTLE: Critical fallback for initialImage, _turtleIdleFrames[DIR_UP] was unexpectedly null.");
+                console.error("TURTLE: Critical fallback for initialImage.");
             }
 
             _turtleSprite = sprites.create(initialImage, SpriteKind.Player);
             _turtleSprite.setFlag(SpriteFlag.StayInScreen, true);
             _turtleSprite.setPosition(_turtleToScreenX(_turtleRawX), _turtleToScreenY(_turtleRawY));
 
-            _updateSpriteAppearance(); // Garante que a imagem e visibilidade estão corretas
+            _updateSpriteAppearance();
         }
     }
 
@@ -322,15 +320,57 @@ namespace turtle {
     //% group="Movement" weight=60
     export function goto(x: number, y: number): void {
         _ensureTurtleExists();
-        _turtleRawX = x;
-        _turtleRawY = y;
-        _turtleSprite.setPosition(_turtleToScreenX(_turtleRawX), _turtleToScreenY(_turtleRawY));
-        _updateSpriteAppearance();
+
+        const prevRawX = _turtleRawX;
+        const prevRawY = _turtleRawY;
+
+        const deltaX = x - prevRawX;
+        const deltaY = y - prevRawY;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        const animDuration = _getAnimationDuration();
+
+        if (animDuration === 0 || distance === 0) {
+            if (_isPenDown) {
+                _drawLineWithThickness(
+                    _turtleToScreenX(prevRawX), _turtleToScreenY(prevRawY),
+                    _turtleToScreenX(x), _turtleToScreenY(y),
+                    _penColor, _penThickness
+                );
+            }
+            _turtleRawX = x;
+            _turtleRawY = y;
+            _turtleSprite.setPosition(_turtleToScreenX(_turtleRawX), _turtleToScreenY(_turtleRawY));
+        } else {
+            const numAnimationSteps = Math.max(1, Math.ceil(distance / PIXELS_PER_STEP));
+            const stepDx = deltaX / numAnimationSteps;
+            const stepDy = deltaY / numAnimationSteps;
+
+            for (let i = 0; i < numAnimationSteps; i++) {
+                const currentX = _turtleRawX;
+                const currentY = _turtleRawY;
+
+                _turtleRawX += stepDx;
+                _turtleRawY += stepDy;
+
+                if (_isPenDown) {
+                    _drawLineWithThickness(
+                        _turtleToScreenX(currentX), _turtleToScreenY(currentY),
+                        _turtleToScreenX(_turtleRawX), _turtleToScreenY(_turtleRawY),
+                        _penColor, _penThickness
+                    );
+                }
+                _turtleSprite.setPosition(_turtleToScreenX(_turtleRawX), _turtleToScreenY(_turtleRawY));
+                if (animDuration > 0) {
+                    pause(animDuration);
+                }
+            }
+            // Garante a posição final exata para evitar erros de arredondamento
+            _turtleRawX = x;
+            _turtleRawY = y;
+            _turtleSprite.setPosition(_turtleToScreenX(_turtleRawX), _turtleToScreenY(_turtleRawY));
+        }
     }
-    //% block="setpos x %x y %y" group="Movement" weight=59 blockHidden=true
-    export function setpos(x: number, y: number): void { goto(x, y); }
-    //% block="setposition x %x y %y" group="Movement" weight=58 blockHidden=true
-    export function setposition(x: number, y: number): void { goto(x, y); }
 
 
     //% block="set heading %to_angle degrees"
@@ -349,11 +389,9 @@ namespace turtle {
     //% group="Movement" weight=40
     export function home(): void {
         _ensureTurtleExists();
-        _turtleRawX = 0;
-        _turtleRawY = 0;
-        _currentHeading = 0; // Home reseta para 0 graus (direita) por padrão
-        _turtleSprite.setPosition(_turtleToScreenX(_turtleRawX), _turtleToScreenY(_turtleRawY));
-        _updateSpriteAppearance();
+        // <<< CORREÇÃO: home() agora chama goto() para ter animação e preservar a velocidade.
+        goto(0, 0);
+        setheading(0); // Aponta para a direita (0 graus) após chegar em casa.
     }
 
     //% block="speed %speedValue (0-10)"
@@ -484,12 +522,17 @@ namespace turtle {
     // --- Drawing Control ---
     //% block="clear drawings"
     //% group="Drawing Control" weight=100
+    //% blockGap=8
+    //% help=turtle/clear
+    //% note="Apaga os desenhos da tartaruga da tela, mas não move a tartaruga."
     export function clear(): void {
         scene.backgroundImage().fill(scene.backgroundColor());
     }
 
     //% block="reset turtle"
     //% group="Drawing Control" weight=90
+    //% help=turtle/reset
+    //% note="Apaga os desenhos, centraliza a tartaruga e a reseta para seu estado inicial."
     export function reset(): void {
         if (_turtleSprite) {
             _turtleSprite.destroy();
