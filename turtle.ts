@@ -1,4 +1,4 @@
-//% color="#2E8B57" icon="\uf188" block="Turtle"
+//% color="#2E8B57" icon="\uf188" block="Turtle Python"
 namespace turtle {
     let _turtleSprite: Sprite = null;
     let _isPenDown: boolean = true;
@@ -215,13 +215,6 @@ namespace turtle {
                 if (e2 < dx) { err += dx; y0 += sy; }
             }
         }
-    }
-
-    //% block="turtle sprite"
-    //% group="Turtle State" weight=30
-    export function turtleSprite(): Sprite {
-        _ensureTurtleExists();
-        return _turtleSprite;
     }
 
     // --- Turtle Motion ---
@@ -523,6 +516,7 @@ namespace turtle {
     //% block="position"
     //% blockAlias=pos
     //% group="Turtle State" weight=90
+    //% blockHidden=true
     export function position(): { x: number, y: number } {
         _ensureTurtleExists();
         return { x: Math.round(_turtleRawX), y: Math.round(_turtleRawY) };
