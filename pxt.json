@@ -3,8 +3,7 @@
     "version": "0.0.1",
     "description": "Uma extensão para simular gráficos Turtle no MakeCode Arcade.",
     "dependencies": {
-        "device": "*",
-        "arcade-text": "github:microsoft/arcade-text#v1.3.0"
+        "device": "*"
     },
     "files": [
         "main.blocks",
@@ -29,5 +28,5 @@
     "supportedTargets": [
         "arcade"
     ],
-    "preferredEditor": "pyprj"
+    "preferredEditor": "blocksprj"
 }

@@ -11,9 +11,6 @@ namespace turtle {
     let _turtleRawY: number = 0;
     let _isTurtleVisible: boolean = true;
 
-    // Array para rastrear os textos escritos
-    let _allTextSprites: TextSprite[] = [];
-
     const ANIMATION_FRAME_DURATION = 150;
     const PIXELS_PER_STEP = 4;
     let _turtleSpeed = 6;
@@ -278,11 +275,6 @@ namespace turtle {
         }
     }
 
-    //% block="fd %distance pixels"
-    //% distance.defl=50
-    //% group="Movement" weight=99 blockHidden=true
-    export function fd(distance: number): void { forward(distance); }
-
     //% block="backward %distance pixels"
     //% blockAlias=bk,back
     //% distance.defl=50
@@ -290,11 +282,6 @@ namespace turtle {
     export function backward(distance: number): void {
         forward(-distance);
     }
-    //% block="bk %distance pixels" group="Movement" weight=89 blockHidden=true
-    export function bk(distance: number): void { backward(distance); }
-    //% block="back %distance pixels" group="Movement" weight=88 blockHidden=true
-    export function back(distance: number): void { backward(distance); }
-
 
     //% block="left %angle degrees"
     //% blockAlias=lt
@@ -305,8 +292,6 @@ namespace turtle {
         _currentHeading += angle;
         _updateSpriteAppearance();
     }
-    //% block="lt %angle degrees" group="Movement" weight=79 blockHidden=true
-    export function lt(angle: number): void { left(angle); }
 
     //% block="right %angle degrees"
     //% blockAlias=rt
@@ -317,8 +302,6 @@ namespace turtle {
         _currentHeading -= angle;
         _updateSpriteAppearance();
     }
-    //% block="rt %angle degrees" group="Movement" weight=69 blockHidden=true
-    export function rt(angle: number): void { right(angle); }
 
     //% block="go to x %x y %y"
     //% blockAlias=setpos,setposition
@@ -378,7 +361,6 @@ namespace turtle {
         }
     }
 
-
     //% block="set heading %to_angle degrees"
     //% blockAlias=seth
     //% to_angle.defl=0
@@ -388,14 +370,12 @@ namespace turtle {
         _currentHeading = to_angle;
         _updateSpriteAppearance();
     }
-    //% block="seth %to_angle degrees" group="Movement" weight=49 blockHidden=true
-    export function seth(to_angle: number): void { setheading(to_angle); }
 
     //% block="home"
     //% group="Movement" weight=40
     export function home(): void {
         _ensureTurtleExists();
-        // <<< CORREÇÃO: home() agora chama goto() para ter animação e preservar a velocidade.
+        // home() chama goto() para ter animação e preservar a velocidade.
         goto(0, 0);
         setheading(0); // Aponta para a direita (0 graus) após chegar em casa.
     }
@@ -410,49 +390,6 @@ namespace turtle {
 
     // --- Pen Control ---
 
-    //% block="write %text || align %align move %move"
-    //% text.defl="Hello"
-    //% align.defl=TurtleAlign.Left
-    //% move.defl=false
-    //% group="Pen Control" weight=50
-    //% inlineInputMode=inline
-    export function write(text: any, align: TurtleAlign = TurtleAlign.Left, move: boolean = false): void {
-        _ensureTurtleExists();
-        const strText = text;
-
-        // Cria o sprite de texto com a cor da caneta atual
-        const textSprite = textsprite.create(strText, 0, _penColor);
-        _allTextSprites.push(textSprite); // Adiciona ao array para limpeza futura
-
-        // Posição da tartaruga na tela
-        const screenX = _turtleToScreenX(_turtleRawX);
-        const screenY = _turtleToScreenY(_turtleRawY);
-
-        // Ajusta a posição Y para alinhar o meio do texto com a tartaruga
-        textSprite.y = screenY;
-
-        // Ajusta a posição X com base no alinhamento
-        switch (align) {
-            case TurtleAlign.Left:
-                textSprite.left = screenX;
-                break;
-            case TurtleAlign.Center:
-                textSprite.x = screenX;
-                break;
-            case TurtleAlign.Right:
-                textSprite.right = screenX;
-                break;
-        }
-
-        // Se 'move' for verdadeiro, move a tartaruga para o final do texto
-        if (move) {
-            // Calcula a nova posição X no sistema de coordenadas da tartaruga
-            const newRawX = _turtleRawX + textSprite.width;
-            // Usa goto para mover (isso também desenhará uma linha se a caneta estiver abaixada)
-            goto(newRawX, _turtleRawY);
-        }
-    }
-
     //% block="pen down"
     //% blockAlias=pd,down
     //% group="Pen Control" weight=100
@@ -460,10 +397,6 @@ namespace turtle {
         _ensureTurtleExists();
         _isPenDown = true;
     }
-    //% block="pd" group="Pen Control" weight=99 blockHidden=true
-    export function pd(): void { pendown(); }
-    //% block="down" group="Pen Control" weight=98 blockHidden=true
-    export function down(): void { pendown(); }
 
     //% block="pen up"
     //% blockAlias=pu,up
@@ -472,10 +405,6 @@ namespace turtle {
         _ensureTurtleExists();
         _isPenDown = false;
     }
-    //% block="pu" group="Pen Control" weight=89 blockHidden=true
-    export function pu(): void { penup(); }
-    //% block="up" group="Pen Control" weight=88 blockHidden=true
-    export function up(): void { penup(); }
 
     //% block="pen color %color=colorindexpicker"
     //% color.defl=1
@@ -500,9 +429,6 @@ namespace turtle {
         _ensureTurtleExists();
         _penThickness = Math.max(1, Math.round(widthNum));
     }
-    //% block="width %widthNum" group="Pen Control" weight=59 blockHidden=true
-    export function width(w: number): void { pensize(w); }
-
 
     // --- Turtle State ---
 
@@ -546,8 +472,6 @@ namespace turtle {
         _isTurtleVisible = true;
         _updateSpriteAppearance();
     }
-    //% block="st" group="Turtle State" weight=59 blockHidden=true
-    export function st(): void { showturtle(); }
 
     //% block="hide turtle"
     //% blockAlias=ht
@@ -559,8 +483,6 @@ namespace turtle {
             _turtleSprite.setFlag(SpriteFlag.Invisible, true);
         }
     }
-    //% block="ht" group="Turtle State" weight=49 blockHidden=true
-    export function ht(): void { hideturtle(); }
 
     //% block="is turtle visible?"
     //% group="Turtle State" weight=40
@@ -585,12 +507,6 @@ namespace turtle {
     //% help=turtle/reset
     //% note="Apaga os desenhos, centraliza a tartaruga e a reseta para seu estado inicial."
     export function reset(): void {
-        // Limpa os sprites de texto
-        for (let s of _allTextSprites) {
-            s.destroy();
-        }
-        _allTextSprites = []; // Esvazia o array
-
         if (_turtleSprite) {
             _turtleSprite.destroy();
             _turtleSprite = null;
