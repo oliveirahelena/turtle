@@ -604,6 +604,4 @@ namespace turtle {
         scene.backgroundImage().fill(scene.backgroundColor());
         _ensureTurtleExists();
     }
-
-    _ensureTurtleExists();
 }
